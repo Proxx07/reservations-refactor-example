@@ -30,7 +30,7 @@ const handleBottom = () => {
   <div class="category" :class="[isParent && 'parent-folder']">
     <div class="category-top">
       <div class="name">
-        {{ category.name }}
+        <b>ID: {{ category.id }}</b> {{ category.name }} | order: {{ category.order }}
       </div>
 
       <button :disabled="category.order === 1" @click="handleTop">
@@ -41,7 +41,6 @@ const handleBottom = () => {
         bottom
       </button>
     </div>
-    {{ category }}
     <div class="folder-inner">
       <slot />
     </div>
@@ -55,6 +54,7 @@ const handleBottom = () => {
   width: 100%;
   font: var(--font-14-r);
   padding-left: 1rem;
+  padding-right: 1rem;
   .category-top {
     display: flex;
     gap: 1rem;
@@ -69,6 +69,9 @@ const handleBottom = () => {
     button {
       cursor: pointer;
     }
+  }
+  .folder-inner {
+    width: 100%;
   }
   &.parent-folder {
     padding: 1rem;

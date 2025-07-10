@@ -28,4 +28,5 @@ export interface ICategory {
   image_url: string
   big_image_url: string
   products: IProduct[]
+  child?: ICategory[]
 }

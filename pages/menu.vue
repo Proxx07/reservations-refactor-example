@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ICategory } from '@composables/useMenu/types';
-import Category from '@components/Category.vue';
 import { useMenu } from '@composables/useMenu';
 
 const { list, loading, getList } = useMenu();
@@ -23,26 +22,12 @@ onMounted(() => {
     <h1 v-if="loading">
       Loading...
     </h1>
-    <div v-else class="category-list">
-      <Category
-        v-for="category in list"
-        :key="category.id"
-        :category="category"
-        :length="list.length"
-        @go-top="handleTop"
-        @go-bot="handleBot"
-      />
-    </div>
+    <div v-else class="category-list font-14-r" v-html="list.map(i => JSON.stringify(i)).join('<br/> <br/>')" />
   </div>
 </template>
 
 <style scoped>
 .menu-wrapper {
   padding: 2rem 2rem;
-}
-.category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 }
 </style>
