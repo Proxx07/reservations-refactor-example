@@ -1,3 +1,5 @@
+import type { ICategory } from '../types';
+
 export const menu: any = {
   success: true,
   data: {
@@ -1031,4 +1033,55 @@ export const menu: any = {
     ],
     total: 6,
   },
+};
+
+export const setTreeList = (arr: ICategory[]): ICategory[] => {
+  let count = 0;
+  const categories = arr.map(i => i);
+  const treeArray: ICategory[] = [];
+  const childFolders: ICategory[] = [];
+  const treeListIndexById: Record<number, number> = {};
+
+  for (const category of categories) {
+    if (!category.parent_id) {
+      treeListIndexById[category.id] = count;
+      category.order = ++count;
+
+      treeArray.push(category);
+    }
+    else {
+      childFolders.push(category);
+    }
+  }
+
+  for (const child of childFolders) {
+    const treeItemIndex = treeListIndexById[child.parent_id!];
+    if (!treeArray[treeItemIndex].child) {
+      child.order = 1;
+      treeArray[treeItemIndex].child = [child];
+    }
+    else {
+      child.order = treeArray[treeItemIndex].child!.length + 1;
+      treeArray[treeItemIndex].child!.push(child);
+    }
+  }
+
+  return treeArray;
+};
+
+export const setFlatList = (array: ICategory[]) => {
+  const categories: ICategory[] = [];
+
+  const setFolders = (folders: ICategory[]) => {
+    for (const folder of folders) {
+      const { child, ...parent } = folder;
+      categories.push(parent);
+
+      if (child && child.length > 0) setFolders(child);
+    }
+  };
+
+  setFolders(array);
+
+  return categories;
 };

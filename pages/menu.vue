@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import type { ICategory } from '@composables/useMenu/types';
+import CategoryList from '@components/CategoryList.vue';
 import { useMenu } from '@composables/useMenu';
 
-const { list, loading, getList } = useMenu();
-
-const handleTop = (category: ICategory) => {
-  console.log('top', category);
-};
-
-const handleBot = (category: ICategory) => {
-  console.log('bot', category);
-};
+const { treeList, loading, getList, postFoldersOrder } = useMenu();
 
 onMounted(() => {
   getList();
@@ -22,12 +14,14 @@ onMounted(() => {
     <h1 v-if="loading">
       Loading...
     </h1>
-    <div v-else class="category-list font-14-r" v-html="list.map(i => JSON.stringify(i)).join('<br/> <br/>')" />
+    <CategoryList v-model="treeList" @update:model-value="postFoldersOrder" />
   </div>
 </template>
 
 <style scoped>
 .menu-wrapper {
   padding: 2rem 2rem;
+  min-height: 100vh;
+  font: var(--font-14-r);
 }
 </style>
